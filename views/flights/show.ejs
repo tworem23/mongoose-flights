@@ -1,0 +1,47 @@
+<%- include('../partials/header') %>
+
+<div><b>Airline:</b></div>
+<div><%= flight.airline %></div>
+<div><b>Departing From:</b></div>
+<div><%= flight.airport %></div>
+<div><b>Departing At:</b></div>
+<div><%= flight.departs %></div>
+<div><b>Flight:</b></div>
+<div><%= flight.flightNo %></div>
+<% flight.destination.forEach(function(d) { %>
+    <div><b>Ariving To:</b></div>
+    <div><%= d.airport %></div>
+<div><b>Ariving At:</b></div>
+<div><%= d.arrival %></div>
+<% }) %>
+<div><b>Tickets:</b></div>
+<% if (tickets.length) { %>
+    <% tickets.forEach(function(ticket) { %>
+    <div>Seat:</div>
+    <div><%= ticket.seat %></div>
+    <div>Price:</div>
+    <div><%= ticket.price %></div>
+    <% }) %>
+<% } %>
+<!--add to destinations form-->
+<% if (!flight?.destination[0]?.arrival) { %>
+<form id="add-to-dest" action="/flights/<%= flight._id %>/destinations" method="POST">
+    <select name="airport">
+        <option value="DIA">DIA</option>
+        <option value="LAX">LAX</option>
+        <option value="LGA">LGA</option>
+        <option value="PIT">PIT</option>
+    </select>
+    <input 
+     type="datetime-local" 
+     id="arrival-time" 
+     name="arrival"
+     min="2023-11-30t20:00"
+     max="2024-11-30t20:00">
+     <button type="submit" action="/flights">Submit</button>
+</form>
+<% } %>
+
+<a href="/flights/<%= flight._id %>/tickets/new">Add Ticket</a>
+
+<%- include('../partials/footer') %>
